@@ -8,11 +8,10 @@ const cors = require("cors");
 
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8000;
-const Frontend_URL =
-  process.env.FRONTEND_URL || "https://crudapi-8wyj.onrender.com";
+const Frontend_URL = process.env.FRONTEND_URL;
 const corsOptions = {
   // origin: "*", // Allow all origins
-  origin: [Frontend_URL], // Allow specified origins
+  origin: [Frontend_URL, "https://crudapi-8wyj.onrender.com"], // Allow specified origins
   methods: ["GET", "POST", "PUT", "DELETE"], // Allow specific HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
 };
