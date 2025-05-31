@@ -6,8 +6,7 @@ const errorHandler = require("./middleware/errorMiddlewares").errorHandler;
 require("dotenv").config();
 const cors = require("cors");
 
-const MONGO_URL =
-  process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce";
+const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8000;
 const Frontend_URL = process.env.FRONTEND_URL;
 const corsOptions = {
