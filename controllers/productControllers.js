@@ -1,26 +1,26 @@
 const Product = require("../models/productModels");
-
+const ayncHandler = require("express-async-handler");
 //all logic needs to be in the controller
 
 //get all Products
-const getProducts = async (req, res) => {
+const getProducts = ayncHandler(async (req, res) => {
   try {
     const products = await Product.find({})
       .then((products) => {
         res.status(200).json(products);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
-        res.status(500).json({ message: error.message });
+        res.status(500);
+        throw new Error(error.message || "Not found");
       });
   } catch (error) {
-    console.error("Error in /products route:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500);
+    throw new Error(error.message || "Not found");
   }
-};
+});
 
 //get single Product
-const getProduct = async (req, res) => {
+const getProduct = ayncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const products = await Product.findById(id)
@@ -28,17 +28,17 @@ const getProduct = async (req, res) => {
         res.status(200).json(products);
       })
       .catch((error) => {
-        console.error("Error fetching products:", error);
-        res.status(500).json({ message: error.message || "Not found" });
+        res.status(500);
+        throw new Error(error.message || "Not found");
       });
   } catch (error) {
-    console.error("Error in /products route:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500);
+    throw new Error(error.message || "Not found");
   }
-};
+});
 
 //update product
-const updateProduct = async (req, res) => {
+const updateProduct = ayncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
@@ -51,29 +51,30 @@ const updateProduct = async (req, res) => {
     }
     res.status(200).json(updatedProduct);
   } catch (error) {
-    console.error("Error in /products route:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500);
+    throw new Error(error.message || "Not found");
   }
-};
+});
 
 //delete product
-const deleteProduct = async (req, res) => {
+const deleteProduct = ayncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
     // we cannot find the product in the database
     if (!deletedProduct) {
-      return res.status(404).json({ message: `Product of ${id} not found` });
+      res.status(404);
+      throw new Error(`Product of ${id} not found`);
     }
     res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    console.error("Error in /products route:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500);
+    throw new Error(error.message || "Not found");
   }
-};
+});
 
 //add product
-const addProduct = async (req, res) => {
+const addProduct = ayncHandler(async (req, res) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json(product);
@@ -82,7 +83,7 @@ const addProduct = async (req, res) => {
     console.log(req.body);
     res.status(500).json({ message: error.message });
   }
-};
+});
 module.exports = {
   getProducts,
   getProduct,
