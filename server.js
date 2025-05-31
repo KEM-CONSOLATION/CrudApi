@@ -8,7 +8,7 @@ const cors = require("cors");
 
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 8000;
-const Frontend_URL = process.env.FRONTEND_URL;
+const Frontend_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 const corsOptions = {
   // origin: "*", // Allow all origins
   origin: [Frontend_URL, "https://crudapi-8wyj.onrender.com"], // Allow specified origins
